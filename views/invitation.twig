@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Acceptation d'invitation</title>
+</head>
+<body>
+    <form id="acceptForm" action="/api/acceptation-invitation" method="POST">
+        <input type="hidden" name="email" value="{{ email }}">
+        <input type="hidden" name="projetId" value="{{ projetId }}">
+        <input type="hidden" name="token" value="{{ token }}">
+    </form>
+
+    <script>
+        document.getElementById('acceptForm').submit();
+    </script>
+</body>
+</html>

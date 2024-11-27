@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat du Projet</title>
+     <!-- Lien vers votre feuille de style CSS -->
+    <link rel="stylesheet" href="/css/style.css"> 
+    <!-- Lien vers Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Lien vers votre feuille de style CSS -->
+    <link rel="stylesheet" href="/css/style.css"> 
+    <!-- Lien vers Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Lien vers FontAwesome pour les icônes -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Ajoutez le script client de Socket.IO -->
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+ {% include 'header.twig' %}
+    <h1>Chat du projet {{ projet.nom }}</h1>
+    <ul id="messages">
+        {% for msg in messages %}
+            <li>{{ msg.userId }}: {{ msg.message }}</li>
+        {% endfor %}
+    </ul>
+    <input type="text" id="messageInput" placeholder="Écrivez un message...">
+    <button id="sendMessageButton">Envoyer</button>
+
+    <div id="notificationBadge" style="display: none;">Nouveau message</div>
+{% include 'footer.twig' %}
+ <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const socket = io();
+
+            // Injection des données depuis le backend
+            const projetId = {{ projetId | json_encode }};
+            const userId = {{ userId | json_encode }};
+
+            if (!projetId || !userId) {
+                console.error('ID du projet ou ID de l\'utilisateur manquant');
+                return;
+            }
+
+            console.log('Projet ID:', projetId);
+            console.log('User ID:', userId);
+
+            // Rejoindre le projet
+            socket.emit('joinProject', projetId);
+
+            // Affichage des messages précédents
+            socket.emit('getPreviousMessages', projetId);
+
+            // Réception des messages précédents du projet
+            socket.on('previousMessages', (messages) => {
+                const messageList = document.getElementById('messages');
+                messages.forEach((msg) => {
+                    const newMessage = document.createElement('li');
+                    newMessage.textContent = `${msg.userId}: ${msg.message}`;
+                    messageList.appendChild(newMessage);
+                });
+            });
+
+            // Envoi d'un message
+            const sendMessageButton = document.getElementById('sendMessageButton');
+            const messageInput = document.getElementById('messageInput');
+
+            sendMessageButton.addEventListener('click', () => {
+                const message = messageInput.value.trim();
+
+                if (!message || !userId || !projetId) {
+                    console.error('Données manquantes pour l\'envoi du message');
+                    return;
+                }
+
+                // Envoyer le message au serveur
+                socket.emit('message', { message, userId, projetId });
+                messageInput.value = '';  // Effacer le champ après l'envoi
+            });
+
+            // Réception d'un nouveau message en temps réel
+            socket.on('message', (message) => {
+                const messageList = document.getElementById('messages');
+                const newMessage = document.createElement('li');
+                newMessage.textContent = `${message.userId}: ${message.message}`;
+                messageList.appendChild(newMessage);
+
+                // Affichage de la notification
+                const notificationBadge = document.getElementById('notificationBadge');
+                notificationBadge.style.display = 'block';  // Afficher le badge de notification
+
+                // Cacher la notification après 3 secondes
+                setTimeout(() => {
+                    notificationBadge.style.display = 'none';
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+</html>

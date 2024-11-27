@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Projets</title>
+
+    <!-- Lien vers Bootstrap 4 CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+      
+        .projet {
+            border: 1px solid #ddd;
+            margin-bottom: 20px; /* Réduire l'espace entre les projets */
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre moins prononcée */
+            transition: transform 0.3s ease-in-out;
+            max-width: 350px; /* Limiter la largeur de la carte */
+            max-height:700px;
+            margin: 10px; /* Ajouter une marge autour des cartes */
+        }
+
+        .projet:hover {
+            transform: scale(1.03); /* Réduire l'effet d'agrandissement */
+        }
+
+        .projet-header {
+            position: relative;
+        }
+
+        /* Réduire la taille de l'image de couverture */
+        .projet-cover {
+            height: 120px; /* Réduire la hauteur */
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .projet-cover-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .projet-logo-container {
+            display: flex;
+            align-items: center;
+            padding: 15px; /* Réduire l'espace autour du titre */
+        }
+
+        .projet-logo {
+            width: 50px; /* Taille du logo ajustée */
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .projet h3 {
+            font-size: 1.2em; /* Réduire la taille du titre */
+            color: #333;
+            margin: 0;
+        }
+
+        .projet p {
+            padding: 10px 15px; /* Réduire l'espace autour de la description */
+            font-size: 0.9em; /* Réduire la taille du texte */
+            color: #555;
+        }
+
+        .membres {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px 15px; /* Réduire l'espacement autour des membres */
+            margin: 0;
+        }
+
+        .membre {
+            margin-right: 12px; /* Réduire l'espace entre les membres */
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .membre-photo {
+            width: 40px; /* Réduire la taille de la photo du membre */
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .membre-nom {
+            display: block;
+            font-size: 0.8em; /* Réduire la taille du texte du nom */
+            color: #333;
+            margin-top: 5px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+    
+</head>
+<body>
+    {% include 'header.twig' %}
+
+    <main class="container mt-5">
+        <h1>Projets Partagés</h1>
+
+        <ul class="projets">
+        {% for projet in projets %}
+            <li class="projet">
+                <div class="projet-header">
+                    <!-- Image de couverture du projet -->
+                    <div class="projet-cover">
+                        <img src="/uploads/photos/logo.jpg" alt="Image de couverture du projet" class="projet-cover-image">
+                    </div>
+                    <p>ID du projet : {{ projet.id }}</p>
+                    <!-- Logo du projet -->
+                    <div class="projet-logo-container">
+                        <h3>{{ projet.nom }}</h3>
+                    </div>
+                </div>
+                <a href="/chat/{{ projet.id }}" class="btn btn-primary" onclick="console.log('URL du chat: /chat/{{ projet.id }}')">Rejoindre le chat</a>
+
+                <div class="mt-2">
+                    <select class="form-control" data-id="{{ projet.id }}" data-nom="{{ projet.nom }}">
+                        <option value="" disabled selected>Choisir une action</option>
+                        <option value="tasks">
+                            <i class="bi bi-check-square"></i> Voir les tâches
+                        </option>
+                        <option value="milestones">
+                            <i class="bi bi-calendar-check"></i> Voir les jalons
+                        </option>
+                        <option value="report">
+                            <i class="bi bi-file-earmark-text"></i> Voir le rapport d'avancement
+                        </option>
+                    
+                        
+                    </select>
+                </div>
+
+                <!-- Description et autres informations -->
+                <p>{{ projet.description }}</p>
+                <p><strong>Date début :</strong> {{ projet.date_debut | date("d-m-Y") }}</p>
+                <p><strong>Date fin :</strong> {{ projet.date_fin | date("d-m-Y") }}</p>
+                <p><strong>Créateur du projet :</strong> {{ projet.createur_nom }}</p>
+
+                <strong>Membres :</strong>
+                <ul class="membres">
+                    {% for membre in projet.membres %}
+                        <li class="membre">
+                            <img src="{{ membre.photo ? membre.photo : 'path/to/default/user.png' }}" alt="{{ membre.nom }}" class="membre-photo">
+                            <span class="membre-nom">{{ membre.nom }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+        </ul>
+
+    </main>
+
+    {% include 'footer.twig' %}
+
+    <!-- Chargement de jQuery, Bootstrap 4 et des scripts supplémentaires -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sélectionner tous les éléments select avec des options d'action
+            const actionSelectors = document.querySelectorAll('.form-control');
+
+            actionSelectors.forEach(select => {
+                select.addEventListener('change', async function () {
+                    const selectedAction = this.value;
+                    const projectId = this.dataset.id;
+                    const projectName = this.dataset.nom;
+
+                    // Vérifier l'action sélectionnée
+                    if (selectedAction === 'tasks') {
+                        // Redirection vers les tâches
+                        window.location.href = `/taches/${projectId}`;
+                    } else if (selectedAction === 'milestones') {
+                        // Redirection vers les jalons
+                        window.location.href = `/api/jalons/${projectId}`;
+                    } else if (selectedAction === 'report') {
+                        // Redirection vers le rapport d'avancement
+                        window.location.href = `/api/rapports/rapport/${projectId}`;
+                    } 
+
+                    // Réinitialiser le select pour éviter que l'action ne soit déclenchée à nouveau
+                    this.value = ''; // Réinitialise le select après l'action
+                });
+            });
+        });
+    </script>
+</body>
+</html>

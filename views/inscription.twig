@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Inscription</title>
+</head>
+<body>
+ {% include 'header.twig' %} <!-- Inclure l'en-tête -->
+  <h1>Inscrivez-vous pour rejoindre le projet</h1>
+  <form id="signup-form">
+    <input type="text" id="nom" placeholder="Nom" required><br>
+    <input type="email" id="email" placeholder="Email" required><br>
+    <input type="password" id="mot_de_passe" placeholder="Mot de passe" required><br>
+    <input type="hidden" id="projetId" value="">
+    <button type="submit">S'inscrire</button>
+  </form>
+{% include 'footer.twig' %}
+  <script>
+    // Récupérer l'ID du projet dans l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const projetId = urlParams.get('projetId');
+    document.getElementById('projetId').value = projetId;
+
+    // Gérer la soumission du formulaire
+    document.getElementById('signup-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const nom = document.getElementById('nom').value;
+      const email = document.getElementById('email').value;
+      const mot_de_passe = document.getElementById('mot_de_passe').value;
+      const projetId = document.getElementById('projetId').value;
+
+      const response = await fetch('/inscrit/inscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nom,
+          email,
+          mot_de_passe,
+          projetId,
+        }),
+      });
+
+      if (response.ok) {
+        alert('Inscription réussie. Vous avez rejoint le projet.');
+        window.location.href = '/'; // Rediriger vers la page d'accueil ou projets
+      } else {
+        alert("Erreur lors de l'inscription");
+      }
+    });
+  </script>
+</body>
+</html>

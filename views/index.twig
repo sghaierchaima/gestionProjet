@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenue sur le Gestionnaire de Projets</title>
+
+    <!-- Lien vers Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Lien vers votre feuille de style CSS -->
+    <link rel="stylesheet" href="/css/style.css"> 
+    <!-- Lien vers Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Lien vers FontAwesome pour les icônes -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+      
+       
+
+
+    </style>
+</head>
+
+<body>
+     {% include 'header.twig' %} <!-- Inclure l'en-tête -->
+
+   <main class="container mt-5">
+    
+
+    <p class="lead">Cette application vous permet de gérer vos projets et vos tâches facilement.</p>
+    <p>Pour commencer, inscrivez-vous ou connectez-vous pour accéder à vos projets.</p>
+    <a href="/inscription" class="btn btn-primary btn-lg mt-3">S'inscrire</a>
+    <a href="/connexion" class="btn btn-outline-primary btn-lg mt-3">Se connecter</a>
+
+
+
+    </main>
+
+    <!-- Section de collaboration -->
+    {% if not userId %}
+<section class="collaboration-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Image avec avatars et interactions -->
+            <div class="col-md-6">
+                <div class="position-relative">
+                    <img src="/im.webp" alt="Collaboration Image" class="img-fluid rounded shadow">
+                    <div class="chat-box position-absolute" style="top: 10%; left: 5%;">
+                        <div class="chat-message p-3 rounded bg-white shadow-sm">
+                            <p><strong>Ben</strong> <span class="text-muted">Il y a 12 min</span></p>
+                            <p>Bonjour <a href="#">@Camille</a>, changeons cette image par une autre.</p>
+                        </div>
+                    </div>
+                    <div class="chat-box position-absolute" style="top: 40%; left: 10%;">
+                        <div class="chat-message p-3 rounded bg-white shadow-sm">
+                            <p><strong>Camille</strong> <span class="text-muted">Il y a 12 min</span></p>
+                            <p>Bien sûr, que penses-tu de celle-ci ?</p>
+                        </div>
+                    </div>
+                    <div class="chat-box position-absolute" style="top: 70%; left: 15%;">
+                        <div class="chat-message p-3 rounded bg-white shadow-sm">
+                            <p><strong>Sarah</strong> <span class="text-muted">À l'instant</span></p>
+                            <p>Voici le nouveau logo <a href="#">@Camille</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Texte d'appel à l'action -->
+            <div class="col-md-6">
+                <h2 class="font-weight-bold">Collaborez efficacement sur vos projets</h2>
+                <p class="lead">Invitez des membres de votre équipe ou des collaborateurs à travailler avec vous sur vos projets. Grâce à nos outils de gestion collaborative, vous pouvez assigner des tâches, suivre l'avancement en temps réel, échanger des idées et partager des fichiers facilement. Que vous travailliez sur des rapports, des plans d'action ou des livrables, notre plateforme vous permet de rester synchronisé et d'optimiser la productivité de votre équipe.</p>
+                <a class="btn btn-primary btn-lg mt-3" data-toggle="modal" data-target="#loginModal">Commencer à créer</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+ {% if not userId %}
+    <section class="about-section py-5">
+        <div class="container">
+            <h2 class="text-center font-weight-bold">À propos de nous</h2>
+            <p class="lead text-center">Le Gestionnaire de Projets est une plateforme dédiée à simplifier la gestion de vos projets en équipe.</p>
+        </div>
+    </section>
+ {% endif %}
+ {% if not userId %}
+    <!-- Section des témoignages -->
+    <section class="testimonials-section py-5">
+        <div class="container">
+            <h2 class="text-center font-weight-bold">Ce que nos utilisateurs disent</h2>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="testimonial-card p-4 rounded shadow">
+                        <h5>Alexandre P.</h5>
+                        <p>Un outil exceptionnel qui a transformé notre façon de travailler en équipe. Je le recommande vivement !</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card p-4 rounded shadow">
+                        <h5>Marie L.</h5>
+                        <p>Simple, intuitif et très efficace pour gérer nos projets. J'adore l'interface !</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card p-4 rounded shadow">
+                        <h5>François G.</h5>
+                        <p>Une plateforme qui facilite la collaboration. Grâce à cela, nous avons pu terminer nos projets à temps !</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+ {% endif %}
+  
+  {% include 'footer.twig' %} <!-- Inclure le pied de page -->
+    <!-- Lien vers jQuery et Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+<!-- Modal de connexion -->
+<div class="modal fade" id="loginModalc" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Se connecter</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Conteneur pour les messages d'erreur -->
+                <div id="loginError" class="text-danger mb-3"></div>
+
+                <!-- Formulaire de connexion -->
+                <form id="loginForm">
+                    <div class="form-group mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="password" class="form-label">Mot de passe</label>
+                        <input type="password" class="form-control" id="password" name="mot_de_passe" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Se connecter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+<!-- Modal d'inscription -->
+<!-- Modal d'inscription -->
+<div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registrationModalLabel">S'inscrire</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="registrationForm" action="/inscription" method="post">
+                    <div class="form-group mb-3">
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" name="nom" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="registrationEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="registrationEmail" name="email" required>
+                        <!-- Message d'erreur sous l'input -->
+                        <div id="emailError" class="text-danger mt-1"></div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="registrationPassword" class="form-label">Mot de passe</label>
+                        <input type="password" class="form-control" id="registrationPassword" name="mot_de_passe" required>
+                        <div class="invalid-feedback" id="passwordError"></div>
+                    </div>
+                    <div class="form-group mb-3">
+    <label for="photo" class="form-label">Photo de profil</label>
+    <input type="file" class="form-control" id="photo" name="photo" accept="image/*" required>
+    <div class="text-danger mt-1" id="photoError"></div> <!-- Message d'erreur pour la photo -->
+</div>
+                    <button type="submit" class="btn btn-primary">S'inscrire</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('registrationModal').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Empêche le formulaire de se soumettre de manière traditionnelle
+
+    const nom = document.getElementById('nom').value;
+    const email = document.getElementById('registrationEmail').value;
+    const mot_de_passe = document.getElementById('registrationPassword').value;
+    const photo = document.getElementById('photo').files[0]; // Récupère le fichier photo
+    const emailError = document.getElementById('emailError');
+    const photoError = document.getElementById('photoError');
+
+    // Crée un FormData pour inclure les fichiers
+    const formData = new FormData();
+    formData.append('nom', nom);
+    formData.append('email', email);
+    formData.append('mot_de_passe', mot_de_passe);
+    formData.append('photo', photo); // Ajoute la photo de profil au FormData
+
+    try {
+        // Envoi des données avec fetch sans spécifier Content-Type
+        const response = await fetch('/inscription', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.status === 400 && result.error) {
+            if (result.error === 'Email déjà utilisé.') {
+                emailError.textContent = result.error;
+            } else if (result.error === 'Photo obligatoire.') {
+                photoError.textContent = result.error;
+            }
+        } else if (response.ok) {
+            // Redirige ou affiche un message de succès si l'inscription est réussie
+            $('#registrationModal').modal('hide'); // Cache le modal d'inscription
+            $('#loginModalc').modal('show'); 
+        }
+    } catch (error) {
+        console.error('Erreur lors de la soumission du formulaire:', error);
+    }
+});
+
+</script>
+
+
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Empêche la soumission par défaut du formulaire
+
+        const email = document.getElementById('email').value;
+        const mot_de_passe = document.getElementById('password').value;
+        const loginError = document.getElementById('loginError');
+        loginError.textContent = ""; // Réinitialise le message d'erreur
+
+        // Envoi de la requête de connexion
+        fetch('/connexion', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, mot_de_passe })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                // Affiche le message d'erreur dans le modal
+                loginError.textContent = data.error;
+            } else {
+                // Ferme le modal et redirige vers la page de projet
+                $('#loginModalc').modal('hide');
+                window.location.href = '/projets'; // Redirection vers la page de projet 
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la connexion:', error);
+            loginError.textContent = 'Une erreur est survenue. Veuillez réessayer.';
+        });
+    });
+</script>
+</html>

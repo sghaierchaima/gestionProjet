@@ -1,0 +1,203 @@
+/* Styles personnalisés pour un design moderne */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f6f9;
+}
+
+header {
+    background: linear-gradient(45deg, #fff, #fff);
+    padding: 1.5rem 2rem; /* Ajusté pour mieux espacer l'élément */
+}
+
+header .logo {
+    width: 200px; /* Ajuste la taille du logo */
+    height: auto;
+}
+
+nav ul {
+    padding: 0;
+    list-style: none;
+}
+
+nav ul li a {
+    color: #060606;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #ffcc00;
+}
+
+main {
+    margin-top: 50px;
+    text-align: center;
+}
+
+main h2 {
+    font-size: 2.5rem;
+    color: #343a40;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.lead {
+    color: #6c757d;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+}
+
+/* Footer amélioré */
+footer {
+    background-color: #f8f9fa;
+    padding: 2rem 0;
+    border-top: 1px solid #e9ecef;
+}
+
+footer p {
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+footer .social-icons a {
+    margin: 0 10px;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+footer .social-icons a:hover {
+    color: #0056b3;
+}
+
+.testimonials-section {
+    background-color: #f9f9f9;
+    border-top: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.testimonial-card {
+    background-color: white;
+    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 300px;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-card p {
+    font-size: 1rem;
+    color: #495057;
+    flex-grow: 1;
+}
+
+.testimonial-card h5 {
+    font-weight: 500;
+    color: #007bff;
+    margin-bottom: 0;
+}
+
+/* Section de collaboration */
+.collaboration-section {
+    background-color: #f9f9f9;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+.collaboration-section .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.collaboration-section .col-md-6 {
+    flex: 1;
+    max-width: 50%; /* Limite la largeur des colonnes à 50% */
+}
+
+.collaboration-section .position-relative {
+    position: relative;
+    width: 100%; /* S'assure que l'image occupe toute la largeur disponible */
+    height: auto;
+}
+
+.collaboration-section img {
+    width: 100%; /* L'image occupe toute la largeur de son conteneur */
+    height: auto; /* Conserve le ratio d'aspect de l'image */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.chat-box {
+    max-width: 60%; /* Limite la largeur de la boîte de chat */
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.chat-message {
+    padding: 1rem;
+    font-size: 1rem;
+}
+
+.chat-message p {
+    margin-bottom: 0.5rem;
+}
+
+.chat-message a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.chat-message a:hover {
+    text-decoration: underline;
+}
+
+/* Texte d'appel à l'action */
+.collaboration-section h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #343a40;
+    margin-bottom: 1.5rem;
+}
+
+.collaboration-section p.lead {
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+
+.collaboration-section .btn {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.collaboration-section .btn:hover {
+    background-color: #0056b3;
+}

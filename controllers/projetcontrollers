@@ -1,0 +1,27 @@
+// projectController.js
+
+const MembreEquipe = require('../models/MembreEquipe');
+const Projet = require('../models/Projet');
+
+// Méthode pour récupérer les projets partagés avec l'utilisateur actuel
+exports.getSharedProjects = async (req, res) => {
+    try {
+        // Assurez-vous que l'utilisateur est authentifié et a un ID
+        const userId = req.user.id; 
+        
+        // Récupérer les projets où l'utilisateur est un membre
+        const sharedProjects = await Projet.findAll({
+            include: {
+                model: MembreEquipe,
+                where: { utilisateurId: userId }, // L'utilisateur doit être un membre du projet
+            }
+        });
+
+        // Répondre avec les projets partagés
+        res.json(sharedProjects);
+    } catch (error) {
+        console.error("Erreur lors de la récupération des projets partagés:", error);
+        // Répondre avec un code d'erreur approprié et un message
+        res.status(500).json({ message: "Erreur serveur lors de la récupération des projets partagés." });
+    }
+};

@@ -1,0 +1,52 @@
+<!-- Lien vers votre feuille de style CSS -->
+    
+      
+       <link rel="stylesheet" href="/css/style.css">
+
+
+     
+<header class="sticky-top">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <!-- Logo à gauche -->
+            <img src="/uploads/photos/logo11.jpeg" alt="Logo" class="logo">
+            <!-- Menu de navigation aligné à droite -->
+            <nav>
+                <ul class="nav justify-content-end">
+                    {% if userId %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/projets">Mes Projets</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/projets/partages">Projets Partagés avec Vous</a>
+                        </li>
+                        {# <li class="nav-item">
+                            <a class="nav-link" href="/api/jalons">Mes Jalons</a>
+                        </li> #}
+                       {#  <li class="nav-item">
+                            <a href="/api/rapport/{{ projetId }}" class="btn btn-primary">Générer le rapport d'avancement</a>
+                        </li> #}
+                        {# <li class="nav-item">
+                            <a class="nav-link" href="/chat">Chat en Temps Réel</a> <!-- Lien vers le chat -->
+                        </li> #}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profil">Mon Profil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/deconnexion">Se déconnecter</a>
+                        </li>
+                        <div id="notificationBadge" style="display: none;">Nouveau message</div>
+
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="modal" data-target="#registrationModal">S'inscrire</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="modal" data-target="#loginModalc">Se connecter</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Jalons</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    {% include 'header.twig' %}
+    
+    <main class="container mt-5">
+        <h2>Gérer les Jalons du Projet: {{ projet.nom }}</h2>
+        <p>Projet ID: {{ projet.id }}</p> 
+        <a href="#ajouterJalonModal" class="btn btn-primary" data-toggle="modal">Ajouter un nouveau jalon</a>
+        
+        <h3 class="mt-4">Liste des Jalons</h3>
+        <ul class="list-group">
+            {% for jalon in jalons %}
+                <li class="list-group-item">
+                    {{ jalon.nom }} - {{ jalon.date_cible | date('d/m/Y') }} - {{ jalon.etat }}
+                    <a href="#modifierJalonModal" class="btn btn-warning btn-sm ml-2" data-toggle="modal" data-jalon-id="{{ jalon.id }}" data-jalon-nom="{{ jalon.nom }}" data-jalon-date="{{ jalon.date_cible }}" data-jalon-etat="{{ jalon.etat }}" data-jalon-description="{{ jalon.description }}">Modifier</a>
+                    <button class="btn btn-danger btn-sm ml-2" onclick="deleteJalon({{ jalon.id }})">Supprimer</button>
+                </li>
+            {% endfor %}
+        </ul>
+    </main>
+
+    <!-- Modal Ajouter Jalon -->
+    <div class="modal fade" id="ajouterJalonModal" tabindex="-1" role="dialog" aria-labelledby="ajouterJalonLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ajouterJalonLabel">Ajouter un Jalon</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="ajouterJalonForm">
+                    <div class="modal-body">
+                    <input type="hidden" id="projetId" name="projetId" value="{{ projet.id }}">
+
+                        <div class="form-group">
+                            <label for="nom">Nom du Jalon</label>
+                            <input type="text" class="form-control" id="nom" name="nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="date_cible">Date Limite</label>
+                            <input type="date" class="form-control" id="date_cible" name="date_cible" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="etat">Etat</label>
+                            <select class="form-control" id="etat" name="etat">
+                                <option value="Non démarré">Non démarré</option>
+                                <option value="En cours">En cours</option>
+                                <option value="Complété">Complété</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Modifier Jalon -->
+    <div class="modal fade" id="modifierJalonModal" tabindex="-1" role="dialog" aria-labelledby="modifierJalonLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modifierJalonLabel">Modifier le Jalon</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="modifierJalonForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="jalonId" name="jalonId">
+                        <div class="form-group">
+                            <label for="editNom">Nom du Jalon</label>
+                            <input type="text" class="form-control" id="editNom" name="nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editDateCible">Date Limite</label>
+                            <input type="date" class="form-control" id="editDateCible" name="date_cible" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editEtat">Etat</label>
+                            <select class="form-control" id="editEtat" name="etat">
+                                <option value="Non démarré">Non démarré</option>
+                                <option value="En cours">En cours</option>
+                                <option value="Complété">Complété</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editDescription">Description</label>
+                            <textarea class="form-control" id="editDescription" name="description"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Modifier</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% include 'footer.twig' %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Code JavaScript pour gérer l'ajout, la modification et la suppression des jalons
+
+        // Ajouter un jalon
+        document.getElementById('ajouterJalonForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const data = {
+                nom: formData.get('nom'),
+                date_cible: formData.get('date_cible'),
+                etat: formData.get('etat'),
+                description: formData.get('description'),
+                  projetId: formData.get('projetId') 
+            };
+console.log(data);
+            try {
+                const response = await fetch('/api/jalons', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    window.location.reload(); // Rafraîchit la page pour afficher le nouveau jalon
+                } else {
+                    const error = await response.text();
+                    alert('Erreur: ' + error);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+        });
+
+        // Modifier un jalon
+        document.getElementById('modifierJalonForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const data = {
+                id: formData.get('jalonId'),
+                nom: formData.get('nom'),
+                date_cible: formData.get('date_cible'),
+                etat: formData.get('etat'),
+                description: formData.get('description')
+            };
+
+            try {
+                const response = await fetch(`/api/jalons/${data.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    window.location.reload(); // Rafraîchit la page pour afficher les modifications
+                } else {
+                    const error = await response.text();
+                    alert('Erreur: ' + error);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+        });
+
+        // Charger les données de modification dans le modal
+        document.querySelectorAll('.btn-warning').forEach(button => {
+            button.addEventListener('click', () => {
+                const id = button.getAttribute('data-jalon-id');
+                const nom = button.getAttribute('data-jalon-nom');
+                const date = button.getAttribute('data-jalon-date');
+                const etat = button.getAttribute('data-jalon-etat');
+                const description = button.getAttribute('data-jalon-description');
+
+                document.getElementById('jalonId').value = id;
+                document.getElementById('editNom').value = nom;
+                document.getElementById('editDateCible').value = date;
+                document.getElementById('editEtat').value = etat;
+                document.getElementById('editDescription').value = description;
+            });
+        });
+
+        // Supprimer un jalon
+        async function deleteJalon(id) {
+            const confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce jalon ?');
+            if (confirmation) {
+                try {
+                    const response = await fetch(`/api/jalons/${id}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        window.location.reload(); // Rafraîchit la page pour retirer le jalon supprimé
+                    } else {
+                        alert('Erreur lors de la suppression');
+                    }
+                } catch (error) {
+                    console.error('Erreur:', error);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
